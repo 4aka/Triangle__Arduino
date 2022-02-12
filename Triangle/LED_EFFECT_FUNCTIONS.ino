@@ -1,10 +1,3 @@
-//------------------------LED EFFECT FUNCTIONS------------------------
-void one_color_allHSV(int ahue) {
-  for (int i = 0 ; i < 127; i++ ) {
-    leds[i] = CHSV(ahue, 255, 255);
-  }
-}
-
 void rainbow_fade() {
   ihue++;
   if (ihue > 255) {
@@ -14,21 +7,20 @@ void rainbow_fade() {
     leds[idex] = CHSV(ihue, 255, 255);
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(60)) return;
 }
 
 void rainbow_loop() {
   idex++;
-  ihue = ihue + thisstep;
   if (idex >= 127) {
     idex = 0;
   }
-  if (ihue > 255) {
+  if (10 + 10 > 255) {
     ihue = 0;
   }
-  leds[idex] = CHSV(ihue, 255, 255);
+  leds[idex] = CHSV(10, 255, 255);
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(20)) return;
 }
 
 void random_burst() {
@@ -36,7 +28,7 @@ void random_burst() {
   ihue = random(0, 255);
   leds[idex] = CHSV(ihue, 255, 255);
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(20)) return;
 }
 
 void color_bounce() {
@@ -87,32 +79,32 @@ void color_bounceFADE() {
   int iR3 = adjacent_ccw(iR2);
   for (int i = 0; i < 127; i++ ) {
     if (i == idex) {
-      leds[i] = CHSV(thishue, 255, 255);
+      leds[i] = CHSV(0, 255, 255);
     }
     else if (i == iL1) {
-      leds[i] = CHSV(thishue, 255, 150);
+      leds[i] = CHSV(0, 255, 150);
     }
     else if (i == iL2) {
-      leds[i] = CHSV(thishue, 255, 80);
+      leds[i] = CHSV(0, 255, 80);
     }
     else if (i == iL3) {
-      leds[i] = CHSV(thishue, 255, 20);
+      leds[i] = CHSV(0, 255, 20);
     }
     else if (i == iR1) {
-      leds[i] = CHSV(thishue, 255, 150);
+      leds[i] = CHSV(0, 255, 150);
     }
     else if (i == iR2) {
-      leds[i] = CHSV(thishue, 255, 80);
+      leds[i] = CHSV(0, 255, 80);
     }
     else if (i == iR3) {
-      leds[i] = CHSV(thishue, 255, 20);
+      leds[i] = CHSV(0, 255, 20);
     }
     else {
       leds[i] = CHSV(0, 0, 0);
     }
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(100)) return;
 }
 
 void pulse_one_color_all() {
@@ -129,10 +121,10 @@ void pulse_one_color_all() {
     }
   }
   for (int idex = 0 ; idex < 127; idex++ ) {
-    leds[idex] = CHSV(thishue, 255, ibright);
+    leds[idex] = CHSV(0, 255, ibright);
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(25)) return;
 }
 
 void pulse_one_color_all_rev() {
@@ -149,10 +141,10 @@ void pulse_one_color_all_rev() {
     }
   }
   for (int idex = 0 ; idex < 127; idex++ ) {
-    leds[idex] = CHSV(thishue, isat, 255);
+    leds[idex] = CHSV(0, isat, 255);
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(20)) return;
 }
 
 void fade_vertical() {
@@ -166,10 +158,10 @@ void fade_vertical() {
   if (ibright > 255) {
     ibright = 0;
   }
-  leds[idexA] = CHSV(thishue, 255, ibright);
-  leds[idexB] = CHSV(thishue, 255, ibright);
+  leds[idexA] = CHSV(0, 255, ibright);
+  leds[idexB] = CHSV(0, 255, ibright);
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(200)) return; // ?? maybe lower
 }
 
 void random_red() {
@@ -225,7 +217,7 @@ void rule30() {
     }
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(100)) return;
 }
 
 void random_march() {
@@ -239,28 +231,7 @@ void random_march() {
     leds[idex].b = ledsX[iCCW][2];
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
-}
-
-void radiation() {
-  int N3  = int(127 / 3);
-  int N6  = int(127 / 6);
-  int N12 = int(127 / 12);
-  for (int i = 0; i < N6; i++ ) {                                   //-HACKY, I KNOW...
-    tcount = tcount + .02;
-    if (tcount > 3.14) {
-      tcount = 0.0;
-    }
-    ibright = int(sin(tcount) * 255);
-    int j0 = (i + 127 - N12) % 127;
-    int j1 = (j0 + N3) % 127;
-    int j2 = (j1 + N3) % 127;
-    leds[j0] = CHSV(thishue, 255, ibright);
-    leds[j1] = CHSV(thishue, 255, ibright);
-    leds[j2] = CHSV(thishue, 255, ibright);
-  }
-  LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(80)) return;
 }
 
 void color_loop_vardelay() {
@@ -283,15 +254,16 @@ void color_loop_vardelay() {
 }
 
 void sin_bright_wave() {
+  int tcount = 0.0;
   for (int i = 0; i < 127; i++ ) {
     tcount = tcount + .1;
     if (tcount > 3.14) {
       tcount = 0.0;
     }
     ibright = int(sin(tcount) * 255);
-    leds[i] = CHSV(thishue, 255, ibright);
+    leds[i] = CHSV(180, 255, ibright);
     LEDS.show();
-    if (safeDelay(thisdelay)) return;
+    if (safeDelay(35)) return;
   }
 }
 
@@ -311,14 +283,14 @@ void pop_horizontal() {
   }
   for (int i = 0; i < 127; i++ ) {
     if (i == ix) {
-      leds[i] = CHSV(thishue, 255, 255);
+      leds[i] = CHSV(0, 255, 255); // this shui
     }
     else {
       leds[i].r = 0; leds[i].g = 0; leds[i].b = 0;
     }
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(20)) return; // delay ??
 }
 
 void quad_bright_curve() {
@@ -334,10 +306,10 @@ void quad_bright_curve() {
     int iquad = -(ax * ax * a) + (ax * b) + c; //-ax2+bx+c
     int hquad = -(127/2 * 127/2 * a) + (127/2 * b) + c;
     ibright = int((float(iquad) / float(hquad)) * 255);
-    leds[x] = CHSV(thishue, 255, ibright);
+    leds[x] = CHSV(180, 255, ibright);
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(100)) return;
 }
 
 void flame() {
@@ -363,7 +335,7 @@ void rainbow_vertical() {
   if (idex > 127/2) {
     idex = 0;
   }
-  ihue = ihue + thisstep;
+  ihue = ihue + 15;
   if (ihue > 255) {
     ihue = 0;
   }
@@ -372,46 +344,7 @@ void rainbow_vertical() {
   leds[idexA] = CHSV(ihue, 255, 255);
   leds[idexB] = CHSV(ihue, 255, 255);
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
-}
-
-void pacman() {
-  int s = int(127 / 4);
-  lcount++;
-  if (lcount > 5) {
-    lcount = 0;
-  }
-  if (lcount == 0) {
-    for (int i = 0 ; i < 127; i++ ) {
-      set_color_led(i, 255, 255, 0);
-    }
-  }
-  if (lcount == 1 || lcount == 5) {
-    for (int i = 0 ; i < 127; i++ ) {
-      set_color_led(i, 255, 255, 0);
-    }
-    leds[s].r = 0; leds[s].g = 0; leds[s].b = 0;
-  }
-  if (lcount == 2 || lcount == 4) {
-    for (int i = 0 ; i < 127; i++ ) {
-      set_color_led(i, 255, 255, 0);
-    }
-    leds[s - 1].r = 0; leds[s - 1].g = 0; leds[s - 1].b = 0;
-    leds[s].r = 0; leds[s].g = 0; leds[s].b = 0;
-    leds[s + 1].r = 0; leds[s + 1].g = 0; leds[s + 1].b = 0;
-  }
-  if (lcount == 3) {
-    for (int i = 0 ; i < 127; i++ ) {
-      set_color_led(i, 255, 255, 0);
-    }
-    leds[s - 2].r = 0; leds[s - 2].g = 0; leds[s - 2].b = 0;
-    leds[s - 1].r = 0; leds[s - 1].g = 0; leds[s - 1].b = 0;
-    leds[s].r = 0; leds[s].g = 0; leds[s].b = 0;
-    leds[s + 1].r = 0; leds[s + 1].g = 0; leds[s + 1].b = 0;
-    leds[s + 2].r = 0; leds[s + 2].g = 0; leds[s + 2].b = 0;
-  }
-  LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(50)) return;
 }
 
 void random_color_pop() {
@@ -420,13 +353,13 @@ void random_color_pop() {
   one_color_all(0, 0, 0);
   leds[idex] = CHSV(ihue, 255, 255);
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(35)) return;
 }
 
 void rgb_propeller() {
   idex++;
-  int ghue = (thishue + 80) % 255;
-  int bhue = (thishue + 160) % 255;
+  int ghue = (0 + 80) % 255;
+  int bhue = (0 + 160) % 255;
   int N3  = int(127 / 3);
   int N6  = int(127 / 6);
   int N12 = int(127 / 12);
@@ -434,37 +367,37 @@ void rgb_propeller() {
     int j0 = (idex + i + 127 - N12) % 127;
     int j1 = (j0 + N3) % 127;
     int j2 = (j1 + N3) % 127;
-    leds[j0] = CHSV(thishue, 255, 255);
+    leds[j0] = CHSV(0, 255, 255);
     leds[j1] = CHSV(ghue, 255, 255);
     leds[j2] = CHSV(bhue, 255, 255);
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(100)) return;
 }
 
 void kitt() {
   int rand = random(0, 127/2);
   for (int i = 0; i < rand; i++ ) {
-    leds[127/2 + i] = CHSV(thishue, 255, 255);
-    leds[127/2 - i] = CHSV(thishue, 255, 255);
+    leds[127/2 + i] = CHSV(0, 255, 255);
+    leds[127/2 - i] = CHSV(0, 255, 255);
     LEDS.show();
-    if (safeDelay(thisdelay / rand)) return;
+    if (safeDelay(100 / rand)) return;
   }
   for (int i = rand; i > 0; i-- ) {
-    leds[127/2 + i] = CHSV(thishue, 255, 0);
-    leds[127/2 - i] = CHSV(thishue, 255, 0);
+    leds[127/2 + i] = CHSV(0, 255, 0);
+    leds[127/2 - i] = CHSV(0, 255, 0);
     LEDS.show();
-    if (safeDelay(thisdelay / rand)) return;
+    if (safeDelay(100 / rand)) return;
   }
 }
 
 void matrix() {
   int rand = random(0, 100);
   if (rand > 90) {
-    leds[0] = CHSV(thishue, 255, 255);
+    leds[0] = CHSV(95, 255, 255);
   }
   else {
-    leds[0] = CHSV(thishue, 255, 0);
+    leds[0] = CHSV(95, 255, 0);
   }
   copy_led_array();
   for (int i = 1; i < 127; i++ ) {
@@ -473,14 +406,14 @@ void matrix() {
     leds[i].b = ledsX[i - 1][2];
   }
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(100)) return;
 }
 
 void new_rainbow_loop() {
   ihue -= 1;
   fill_rainbow( leds, 127, ihue );
   LEDS.show();
-  if (safeDelay(thisdelay)) return;
+  if (safeDelay(15)) return;
 }
 
 void colorWipe(byte red, byte green, byte blue, int SpeedDelay) {
@@ -555,88 +488,18 @@ void Fire(int Cooling, int Sparking, int SpeedDelay) {
 void setPixelHeatColor (int Pixel, byte temperature) {
   byte t192 = round((temperature / 255.0) * 191);
 
-  byte heatramp = t192 & 0x3F;
-  heatramp <<= 2;
+  // calculate ramp up from
+  byte heatramp = t192 & 0x3F; // 0..63
+  heatramp <<= 2; // scale up to 0..252
 
-  if ( t192 > 0x80) {
+  // figure out which third of the spectrum we're in:
+  if ( t192 > 0x80) {                    // hottest
     setPixel(Pixel, 255, 255, heatramp);
-  } else if ( t192 > 0x40 ) {
+  } else if ( t192 > 0x40 ) {            // middle
     setPixel(Pixel, 255, heatramp, 0);
-  } else {
+  } else {                               // coolest
     setPixel(Pixel, heatramp, 0, 0);
   }
-}
-
-void CenterToOutside(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
-  for (int i = ((127 - EyeSize) / 2); i >= 0; i--) {
-    setAll(0, 0, 0);
-
-    setPixel(i, red / 10, green / 10, blue / 10);
-    for (int j = 1; j <= EyeSize; j++) {
-      setPixel(i + j, red, green, blue);
-    }
-    setPixel(i + EyeSize + 1, red / 10, green / 10, blue / 10);
-
-    setPixel(127 - i, red / 10, green / 10, blue / 10);
-    for (int j = 1; j <= EyeSize; j++) {
-      setPixel(127 - i - j, red, green, blue);
-    }
-    setPixel(127 - i - EyeSize - 1, red / 10, green / 10, blue / 10);
-
-    FastLED.show();
-    if (safeDelay(SpeedDelay)) return;
-  }
-  if (safeDelay(ReturnDelay)) return;
-}
-
-void OutsideToCenter(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
-  for (int i = 0; i <= ((127 - EyeSize) / 2); i++) {
-    setAll(0, 0, 0);
-
-    setPixel(i, red / 10, green / 10, blue / 10);
-    for (int j = 1; j <= EyeSize; j++) {
-      setPixel(i + j, red, green, blue);
-    }
-    setPixel(i + EyeSize + 1, red / 10, green / 10, blue / 10);
-
-    setPixel(127 - i, red / 10, green / 10, blue / 10);
-    for (int j = 1; j <= EyeSize; j++) {
-      setPixel(127 - i - j, red, green, blue);
-    }
-    setPixel(127 - i - EyeSize - 1, red / 10, green / 10, blue / 10);
-
-    FastLED.show();
-    if (safeDelay(SpeedDelay)) return;
-  }
-  if (safeDelay(ReturnDelay)) return;
-}
-
-void LeftToRight(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
-  for (int i = 0; i < 127 - EyeSize - 2; i++) {
-    setAll(0, 0, 0);
-    setPixel(i, red / 10, green / 10, blue / 10);
-    for (int j = 1; j <= EyeSize; j++) {
-      setPixel(i + j, red, green, blue);
-    }
-    setPixel(i + EyeSize + 1, red / 10, green / 10, blue / 10);
-    FastLED.show();
-    if (safeDelay(SpeedDelay)) return;
-  }
-  if (safeDelay(ReturnDelay)) return;
-}
-
-void RightToLeft(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
-  for (int i = 127 - EyeSize - 2; i > 0; i--) {
-    setAll(0, 0, 0);
-    setPixel(i, red / 10, green / 10, blue / 10);
-    for (int j = 1; j <= EyeSize; j++) {
-      setPixel(i + j, red, green, blue);
-    }
-    setPixel(i + EyeSize + 1, red / 10, green / 10, blue / 10);
-    FastLED.show();
-    if (safeDelay(SpeedDelay)) return;
-  }
-  if (safeDelay(ReturnDelay)) return;
 }
 
 void rainbowCycle(int SpeedDelay) {
@@ -761,56 +624,6 @@ void theaterChaseRainbow(int SpeedDelay) {
         setPixel(i + q, 0, 0, 0);    //turn every third pixel off
       }
     }
-  }
-}
-
-void BouncingBalls(byte red, byte green, byte blue, int BallCount) {
-  float Gravity = -9.81;
-  int StartHeight = 1;
-
-  float Height[BallCount];
-  float ImpactVelocityStart = sqrt( -2 * Gravity * StartHeight );
-  float ImpactVelocity[BallCount];
-  float TimeSinceLastBounce[BallCount];
-  int   Position[BallCount];
-  long  ClockTimeSinceLastBounce[BallCount];
-  float Dampening[BallCount];
-
-  for (int i = 0 ; i < BallCount ; i++) {
-    ClockTimeSinceLastBounce[i] = millis();
-    Height[i] = StartHeight;
-    Position[i] = 0;
-    ImpactVelocity[i] = ImpactVelocityStart;
-    TimeSinceLastBounce[i] = 0;
-    Dampening[i] = 0.90 - float(i) / pow(BallCount, 2);
-  }
-
-  while (true) {
-    if (changeFlag) {
-      changeFlag = false;
-      return;
-    }
-    for (int i = 0 ; i < BallCount ; i++) {
-      TimeSinceLastBounce[i] =  millis() - ClockTimeSinceLastBounce[i];
-      Height[i] = 0.5 * Gravity * pow( TimeSinceLastBounce[i] / 1000 , 2.0 ) + ImpactVelocity[i] * TimeSinceLastBounce[i] / 1000;
-
-      if ( Height[i] < 0 ) {
-        Height[i] = 0;
-        ImpactVelocity[i] = Dampening[i] * ImpactVelocity[i];
-        ClockTimeSinceLastBounce[i] = millis();
-
-        if ( ImpactVelocity[i] < 0.01 ) {
-          ImpactVelocity[i] = ImpactVelocityStart;
-        }
-      }
-      Position[i] = round( Height[i] * (127 - 1) / StartHeight);
-    }
-
-    for (int i = 0 ; i < BallCount ; i++) {
-      setPixel(Position[i], red, green, blue);
-    }
-    FastLED.show();
-    setAll(0, 0, 0);
   }
 }
 
