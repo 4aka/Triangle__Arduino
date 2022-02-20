@@ -3,7 +3,7 @@ void rainbow_fade() {
   if (ihue > 255) {
     ihue = 0;
   }
-  for (int idex = 0 ; idex < 127; idex++ ) {
+  for (int idex = 0 ; idex < ledsQy; idex++ ) {
     leds[idex] = CHSV(ihue, 255, 255);
   }
   LEDS.show();
@@ -11,7 +11,7 @@ void rainbow_fade() {
 }
 
 void random_burst() {
-  idex = random(0, 127);
+  idex = random(0, ledsQy);
   ihue = random(0, 255);
   leds[idex] = CHSV(ihue, 255, 255);
   LEDS.show();
@@ -31,7 +31,7 @@ void pulse_one_color_all() {
       bouncedirection = 0;
     }
   }
-  for (int idex = 0 ; idex < 127; idex++ ) {
+  for (int idex = 0 ; idex < ledsQy; idex++ ) {
     leds[idex] = CHSV(0, 255, ibright);
   }
   LEDS.show();
@@ -51,7 +51,7 @@ void pulse_one_color_all_rev() {
       bouncedirection = 0;
     }
   }
-  for (int idex = 0 ; idex < 127; idex++ ) {
+  for (int idex = 0 ; idex < ledsQy; idex++ ) {
     leds[idex] = CHSV(0, isat, 255);
   }
   LEDS.show();
@@ -60,7 +60,7 @@ void pulse_one_color_all_rev() {
 
 void random_red() {
   int temprand;
-  for (int i = 0; i < 127; i++ ) {
+  for (int i = 0; i < ledsQy; i++ ) {
     temprand = random(0, 100);
     if (temprand > 50) {
       leds[i].r = 255;
@@ -75,16 +75,16 @@ void random_red() {
 
 void quad_bright_curve() {
   int ax;
-  for (int x = 0; x < 127; x++ ) {
-    if (x <= 127/2) {
+  for (int x = 0; x < ledsQy; x++ ) {
+    if (x <= ledsQy / 2) {
       ax = x;
     }
-    else if (x > 127/2) {
-      ax = 127 - x;
+    else if (x > ledsQy / 2) {
+      ax = ledsQy - x;
     }
     int a = 1; int b = 1; int c = 0;
     int iquad = -(ax * ax * a) + (ax * b) + c; //-ax2+bx+c
-    int hquad = -(127/2 * 127/2 * a) + (127/2 * b) + c;
+    int hquad = -(ledsQy / 2 * ledsQy / 2 * a) + (ledsQy / 2 * b) + c;
     ibright = int((float(iquad) / float(hquad)) * 255);
     leds[x] = CHSV(180, 255, ibright);
   }
@@ -97,21 +97,21 @@ void flame() {
   float hmin = 0.1; float hmax = 45.0;
   float hdif = hmax - hmin;
   int randtemp = random(0, 3);
-  float hinc = (hdif / float(127/2)) + randtemp;
+  float hinc = (hdif / float(ledsQy / 2)) + randtemp;
   int ihue = hmin;
-  for (int i = 0; i <= 127/2; i++ ) {
+  for (int i = 0; i <= ledsQy / 2; i++ ) {
     ihue = ihue + hinc;
     leds[i] = CHSV(ihue, 255, 255);
     int ih = horizontal_index(i);
     leds[ih] = CHSV(ihue, 255, 255);
-    leds[127/2].r = 255; leds[127/2].g = 255; leds[127/2].b = 255;
+    leds[ledsQy / 2].r = 255; leds[ledsQy / 2].g = 255; leds[ledsQy / 2].b = 255;
     LEDS.show();
     if (safeDelay(idelay)) return;
   }
 }
 
 void random_color_pop() {
-  idex = random(0, 127);
+  idex = random(0, ledsQy);
   ihue = random(0, 255);
   one_color_all(0, 0, 0);
   leds[idex] = CHSV(ihue, 255, 255);
@@ -123,13 +123,13 @@ void rgb_propeller() { // change colour
   idex++;
   int ghue = (0 + 80) % 255;
   int bhue = (0 + 160) % 255;
-  int N3  = int(127 / 3);
-  int N6  = int(127 / 6);
-  int N12 = int(127 / 12);
+  int N3  = int(ledsQy / 3);
+  int N6  = int(ledsQy / 6);
+  int N12 = int(ledsQy / 12);
   for (int i = 0; i < N3; i++ ) {
-    int j0 = (idex + i + 127 - N12) % 127;
-    int j1 = (j0 + N3) % 127;
-    int j2 = (j1 + N3) % 127;
+    int j0 = (idex + i + ledsQy - N12) % ledsQy;
+    int j1 = (j0 + N3) % ledsQy;
+    int j2 = (j1 + N3) % ledsQy;
     leds[j0] = CHSV(0, 255, 255);
     leds[j1] = CHSV(ghue, 255, 255);
     leds[j2] = CHSV(bhue, 255, 255);
@@ -140,13 +140,13 @@ void rgb_propeller() { // change colour
 
 void new_rainbow_loop() {
   ihue -= 1;
-  fill_rainbow( leds, 127, ihue );
+  fill_rainbow( leds, ledsQy, ihue );
   LEDS.show();
   if (safeDelay(15)) return;
 }
 
 void colorWipe(byte red, byte green, byte blue, int SpeedDelay) {
-  for (uint16_t i = 0; i < 127; i++) {
+  for (uint16_t i = 0; i < ledsQy; i++) {
     setPixel(i, red, green, blue);
     FastLED.show();
     if (safeDelay(SpeedDelay)) return;
@@ -155,7 +155,7 @@ void colorWipe(byte red, byte green, byte blue, int SpeedDelay) {
 
 void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, int ReturnDelay) {
 
-  for (int i = 0; i < 127 - EyeSize - 2; i++) {
+  for (int i = 0; i < ledsQy - EyeSize - 2; i++) {
     setAll(0, 0, 0);
     setPixel(i, red / 10, green / 10, blue / 10);
     for (int j = 1; j <= EyeSize; j++) {
@@ -168,7 +168,7 @@ void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
 
   if (safeDelay(ReturnDelay)) return;
 
-  for (int i = 127 - EyeSize - 2; i > 0; i--) {
+  for (int i = ledsQy - EyeSize - 2; i > 0; i--) {
     setAll(0, 0, 0);
     setPixel(i, red / 10, green / 10, blue / 10);
     for (int j = 1; j <= EyeSize; j++) {
@@ -183,12 +183,12 @@ void CylonBounce(byte red, byte green, byte blue, int EyeSize, int SpeedDelay, i
 }
 
 void Fire(int Cooling, int Sparking, int SpeedDelay) {
-  static byte heat[127];
+  static byte heat[ledsQy];
   int cooldown;
 
   // Step 1.  Cool down every cell a little
-  for ( int i = 0; i < 127; i++) {
-    cooldown = random(0, ((Cooling * 10) / 127) + 2);
+  for ( int i = 0; i < ledsQy; i++) {
+    cooldown = random(0, ((Cooling * 10) / ledsQy) + 2);
 
     if (cooldown > heat[i]) {
       heat[i] = 0;
@@ -197,7 +197,7 @@ void Fire(int Cooling, int Sparking, int SpeedDelay) {
     }
   }
 
-  for ( int k = 127 - 1; k >= 2; k--) {
+  for ( int k = ledsQy - 1; k >= 2; k--) {
     heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2]) / 3;
   }
 
@@ -206,7 +206,7 @@ void Fire(int Cooling, int Sparking, int SpeedDelay) {
     heat[y] = heat[y] + random(160, 255);
   }
 
-  for ( int j = 0; j < 127; j++) {
+  for ( int j = 0; j < ledsQy; j++) {
     setPixelHeatColor(j, heat[j] );
   }
 
@@ -237,8 +237,8 @@ void rainbowCycle(int SpeedDelay) {
   uint16_t i, j;
 
   for (j = 0; j < 256 * 5; j++) { // 5 cycles of all colors on wheel
-    for (i = 0; i < 127; i++) {
-      c = Wheel(((i * 256 / 127) + j) & 255);
+    for (i = 0; i < ledsQy; i++) {
+      c = Wheel(((i * 256 / ledsQy) + j) & 255);
       setPixel(i, *c, *(c + 1), *(c + 2));
     }
     FastLED.show();
@@ -268,35 +268,31 @@ byte * Wheel(byte WheelPos) {
   return c;
 }
 
-void TwinkleRandom(int Count, int SpeedDelay, boolean OnlyOne) {
+void TwinkleRandom(int Count, int SpeedDelay) {
   setAll(0, 0, 0);
 
   for (int i = 0; i < Count; i++) {
-    setPixel(random(127), random(0, 255), random(0, 255), random(0, 255));
+    setPixel(random(ledsQy), random(0, 255), random(0, 255), random(0, 255));
     FastLED.show();
     if (safeDelay(SpeedDelay)) return;
-    if (OnlyOne) {
-      setAll(0, 0, 0);
-    }
   }
-
   if (safeDelay(SpeedDelay)) return;
 }
 
 void RunningLights(byte red, byte green, byte blue, int WaveDelay) {
   int Position = 0;
 
-  for (int i = 0; i < 127 * 2; i++)
+  for (int i = 0; i < ledsQy * 2; i++)
   {
     Position++; // = 0; //Position + Rate;
-    for (int i = 0; i < 127; i++) {
+    for (int i = 0; i < ledsQy; i++) {
       // sine wave, 3 offset waves make a rainbow!
-      //float level = sin(i+Position) * 127 + 128;
+      //float level = sin(i+Position) * ledsQy + 128;
       //setPixel(i,level,0,0);
-      //float level = sin(i+Position) * 127 + 128;
-      setPixel(i, ((sin(i + Position) * 127 + 128) / 255)*red,
-               ((sin(i + Position) * 127 + 128) / 255)*green,
-               ((sin(i + Position) * 127 + 128) / 255)*blue);
+      //float level = sin(i+Position) * ledsQy + 128;
+      setPixel(i, ((sin(i + Position) * ledsQy + 128) / 255)*red,
+               ((sin(i + Position) * ledsQy + 128) / 255)*green,
+               ((sin(i + Position) * ledsQy + 128) / 255)*blue);
     }
 
     FastLED.show();
@@ -305,7 +301,7 @@ void RunningLights(byte red, byte green, byte blue, int WaveDelay) {
 }
 
 void Sparkle(byte red, byte green, byte blue, int SpeedDelay) {
-  int Pixel = random(127);
+  int Pixel = random(ledsQy);
   setPixel(Pixel, red, green, blue);
   FastLED.show();
   if (safeDelay(SpeedDelay)) return;
@@ -314,8 +310,7 @@ void Sparkle(byte red, byte green, byte blue, int SpeedDelay) {
 
 void SnowSparkle(byte red, byte green, byte blue, int SparkleDelay, int SpeedDelay) {
   setAll(red, green, blue);
-
-  int Pixel = random(127);
+  int Pixel = random(ledsQy);
   setPixel(Pixel, 0xff, 0xff, 0xff);
   FastLED.show();
   if (safeDelay(SparkleDelay)) return;
@@ -327,12 +322,12 @@ void SnowSparkle(byte red, byte green, byte blue, int SparkleDelay, int SpeedDel
 void theaterChase(byte red, byte green, byte blue, int SpeedDelay) {
   for (int j = 0; j < 10; j++) { //do 10 cycles of chasing
     for (int q = 0; q < 3; q++) {
-      for (int i = 0; i < 127; i = i + 3) {
+      for (int i = 0; i < ledsQy; i = i + 3) {
         setPixel(i + q, red, green, blue);  //turn every third pixel on
       }
       FastLED.show();
       if (safeDelay(SpeedDelay)) return;
-      for (int i = 0; i < 127; i = i + 3) {
+      for (int i = 0; i < ledsQy; i = i + 3) {
         setPixel(i + q, 0, 0, 0);    //turn every third pixel off
       }
     }
@@ -344,13 +339,13 @@ void theaterChaseRainbow(int SpeedDelay) {
 
   for (int j = 0; j < 256; j++) {   // cycle all 256 colors in the wheel
     for (int q = 0; q < 3; q++) {
-      for (int i = 0; i < 127; i = i + 3) {
+      for (int i = 0; i < ledsQy; i = i + 3) {
         c = Wheel( (i + j) % 255);
         setPixel(i + q, *c, *(c + 1), *(c + 2)); //turn every third pixel on
       }
       FastLED.show();
       if (safeDelay(SpeedDelay)) return;
-      for (int i = 0; i < 127; i = i + 3) {
+      for (int i = 0; i < ledsQy; i = i + 3) {
         setPixel(i + q, 0, 0, 0);    //turn every third pixel off
       }
     }
@@ -366,4 +361,10 @@ boolean safeDelay(int delTime) {
     }
   }
   return false;
+}
+
+void one_color_all(int cred, int cgrn, int cblu) {
+  for (int i = 0 ; i < ledsQy; i++ ) {
+    leds[i].setRGB(cred, cgrn, cblu);
+  }
 }
