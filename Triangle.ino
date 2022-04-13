@@ -42,10 +42,10 @@ void loop() {
     case 0xF720DF: new_rainbow_loop(); break;
     case 0xF7A05F: rainbowCycle(20); break;
     case 0xF7609F: rainbow_fade(); break;
-    case 0xF7E01F: pulse_one_color_all(); break; // Fade?
+    case 0xF7E01F: pulse_one_color_all(); break; // TODO Fix
 
     /*The second row of RC*/
-    case 0xF710EF: pulse_one_color_all_rev(); break;
+    case 0xF710EF: pulse_one_color_all_rev(); break;  // TODO Fix
     case 0xF7906F: quad_bright_curve(); break;
     case 0xF750AF: flame();  break;
     case 0xF7D02F: random_color_pop(); break;
@@ -65,8 +65,8 @@ void loop() {
     /*The fifth row of RC*/
     case 0xF728D7: theaterChase(0, 0, 0xff, 150); break;
     case 0xF7A857: theaterChaseRainbow(200); break;
-    // case 0xF76897:
-    // case 0xF7E817:
+    case 0xF76897: brightness = 50; LEDS.setBrightness(brightness); break;
+    case 0xF7E817: brightness = 250; LEDS.setBrightness(brightness); break;
 
     /*Off button*/
     case 0xF740BF: setAll(0, 0, 0); break; // Disable strip
